@@ -1,10 +1,31 @@
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import style from "./[id].module.css";
 import fetchOneBook from "@/lib/fetch-one-book";
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
+export const getStaticPaths = () => {
+  return {
+    paths: [
+      {
+        params: { id: "1" },
+      },
+      {
+        params: { id: "2" },
+      },
+      {
+        params: { id: "3" },
+      },
+      {
+        params: { id: "4" },
+      },
+      {
+        params: { id: "12" },
+      },
+    ],
+    fallback: false,
+  };
+};
+
+export const getStaticProps = async (context: GetStaticPropsContext) => {
   const bookId = context.params!.id;
 
   const book = await fetchOneBook(Number(bookId));
@@ -15,7 +36,7 @@ export const getServerSideProps = async (
 
 export default function Page({
   book,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   if (!book) {
     return <div>문제가 발생했습니다.</div>;
   }
