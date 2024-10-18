@@ -15,7 +15,6 @@ export const getStaticProps = async () => {
 
   return {
     props: { allBooks, recommendBooks },
-    revalidate: 3,
   };
 };
 export default function Home({
