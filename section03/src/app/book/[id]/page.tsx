@@ -1,7 +1,8 @@
-export default function Page({
+export default async function Page({
   params,
 }: {
   params: { id: string | string[] };
 }) {
-  return <div>Book {params.id}</div>;
+  const { id } = await params;
+  return <div>Book {id}</div>;
 }
