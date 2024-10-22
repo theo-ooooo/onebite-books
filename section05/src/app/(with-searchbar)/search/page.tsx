@@ -10,7 +10,10 @@ export default async function Page({
 }) {
   const { q } = await searchParams;
   const reseponse = await fetch(
-    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/search?q=${q}`
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/search?q=${q}`,
+    {
+      next: { revalidate: 10 },
+    }
   );
 
   if (!reseponse.ok) {

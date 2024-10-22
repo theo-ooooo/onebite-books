@@ -1,4 +1,11 @@
+import { notFound } from "next/navigation";
 import style from "./page.module.css";
+
+// export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return [{ id: "1" }, { id: "2" }, { id: "3" }];
+}
 
 export default async function Page({
   params,
@@ -12,6 +19,10 @@ export default async function Page({
   );
 
   if (!reseponse.ok) {
+    console.log(reseponse);
+    if (reseponse.status === 404) {
+      notFound();
+    }
     return <div>오류가 발생하였습니다.</div>;
   }
 
