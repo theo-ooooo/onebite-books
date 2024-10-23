@@ -41,6 +41,7 @@ async function RecoBooks() {
     </div>
   );
 }
+
 export default function Home() {
   return (
     <div className={style.container}>
