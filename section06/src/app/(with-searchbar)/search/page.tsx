@@ -1,4 +1,5 @@
 import BookItem from "@/components/book-item";
+import BookListSkeletion from "@/components/skeleton/book-list-skeleton";
 import { BookData } from "@/types";
 import delay from "@/utils/delay";
 import { Suspense } from "react";
@@ -36,7 +37,7 @@ export default async function Page({
   const { q } = await searchParams;
 
   return (
-    <Suspense key={q || ""} fallback={<div>Loading...</div>}>
+    <Suspense key={q || ""} fallback={<BookListSkeletion count={3} />}>
       <SearchResult q={q || ""} />
     </Suspense>
   );
