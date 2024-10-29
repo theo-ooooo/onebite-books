@@ -2,7 +2,6 @@ import type { BookData } from "@/types";
 import Link from "next/link";
 import style from "./book-item.module.css";
 import Image from "next/image";
-import { lazy } from "react";
 
 export default function BookItem({
   id,
