@@ -4,9 +4,9 @@ import { BookData } from "@/types";
 import delay from "@/utils/delay";
 import { Suspense } from "react";
 import BookListSkeletion from "@/components/skeleton/book-list-skeleton";
+import { Metadata } from "next";
 
 async function AllBooks() {
-  await delay(1500);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book`,
     { cache: "force-cache" }
@@ -27,7 +27,6 @@ async function AllBooks() {
 }
 
 async function RecoBooks() {
-  await delay(3000);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/random`,
     { next: { revalidate: 3 } }
@@ -48,6 +47,16 @@ async function RecoBooks() {
 }
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "한입북스",
+  description: "한입북스의 모든 도서를 만나보세요",
+  openGraph: {
+    title: "한입북스",
+    description: "한입북스의 모든 도서를 만나보세요",
+    images: ["/thumbnail.png"],
+  },
+};
 
 export default function Home() {
   return (

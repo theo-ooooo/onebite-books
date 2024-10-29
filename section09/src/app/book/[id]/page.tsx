@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
 import style from "./page.module.css";
-import { ReviewData } from "@/types";
+import { BookData, ReviewData } from "@/types";
 import ReviewItem from "@/components/review-item";
 import ReviewEditor from "@/components/review-editor";
 import Image from "next/image";
+import { Metadata } from "next";
 
 export const dynamic = "force-static";
 
@@ -61,6 +62,35 @@ async function ReviewList({ bookId }: { bookId: string }) {
       ))}
     </section>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+
+  const reseponse = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/${id}`,
+    { cache: "force-cache" }
+  );
+
+  if (!reseponse.ok) {
+    throw new Error(reseponse.statusText);
+  }
+
+  const book: BookData = await reseponse.json();
+
+  return {
+    title: `${book.title} : 한입북스`,
+    description: `${book.description}`,
+    openGraph: {
+      title: `${book.title} : 한입북스`,
+      description: `${book.description}`,
+      images: [book.coverImgUrl],
+    },
+  };
 }
 
 export default async function Page({
