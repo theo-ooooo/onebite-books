@@ -1,14 +1,20 @@
 "use server";
 
+import delay from "@/utils/delay";
 import { revalidateTag } from "next/cache";
 
-export async function createReviewAction(formData: FormData) {
+export async function createReviewAction(_: any, formData: FormData) {
   const bookId = formData.get("bookId")?.toString();
   const author = formData.get("author")?.toString();
   const content = formData.get("content")?.toString();
 
+  await delay(2000);
+
   if (!content || !author || !bookId) {
-    return;
+    return {
+      status: false,
+      error: "리뷰 내용과 작성자를 입력해주세요.",
+    };
   }
 
   try {
@@ -17,10 +23,19 @@ export async function createReviewAction(formData: FormData) {
       { method: "POST", body: JSON.stringify({ author, content, bookId }) }
     );
 
-    console.log(response.status);
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
     revalidateTag(`reviews-${bookId}`);
+    return {
+      status: true,
+      error: "",
+    };
   } catch (e) {
-    console.error(e);
-    return;
+    return {
+      status: false,
+      error: `리뷰 저장이 실패했습니다 : ${e}`,
+    };
   }
 }
